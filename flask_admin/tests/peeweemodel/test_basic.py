@@ -216,8 +216,7 @@ def test_column_editable_list(
     # Test in-line edit field rendering
     rv = client.get("/admin/model1/")
     data = rv.data.decode("utf-8")
-    assert "hx-get=" in data
-    assert 'class="editable-cell"' in data
+    assert 'data-role="x-editable"' in data
 
     # Form - Test basic in-line edit functionality
     rv = client.post(
@@ -228,8 +227,7 @@ def test_column_editable_list(
         },
     )
     data = rv.data.decode("utf-8")
-    assert "change-success-1" in data
-    assert 'class="editable-cell"' in data
+    assert "Record was successfully saved." == data
 
     # ensure the value has changed
     rv = client.get("/admin/model1/")
@@ -249,7 +247,6 @@ def test_column_editable_list(
     )
     data = rv.data.decode("utf-8")
     assert rv.status_code == 500
-    assert 'hx-post="./ajax/update/"' in data  # edit form re-rendered with errors
 
     # Test invalid primary key
     rv = client.post(
@@ -281,7 +278,7 @@ def test_column_editable_list(
         },
     )
     data = rv.data.decode("utf-8")
-    assert 'class="editable-cell"' in data
+    assert "Record was successfully saved." == data
 
     # confirm the value has changed
     rv = client.get("/admin/model2/")
